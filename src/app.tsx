@@ -1,40 +1,24 @@
-import { Component } from 'react'
-import Taro from '@tarojs/taro'
-import './app.less'
-import { store } from "./store"
-import { Provider } from 'react-redux'
+import 'antd/dist/antd.less';
+import './App.less';
+import PrivateRoute from "components/privateRoute";
+
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import Login from "pages/login";
+import Layout from "pages/layout";
 
 
-class App extends Component {
+function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Login}></Route>
+          <PrivateRoute path="/layout" component={Layout}></PrivateRoute>
+        </Switch>
+      </BrowserRouter>
 
-  componentDidMount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
-  componentDidCatchError() { }
-  // options
-  onLaunch() {
-    Taro.getSystemInfo({})
-      .then(res => {
-        Taro.setStorageSync("statusBarHeight", res.statusBarHeight || 0)
-        // Taro.$navBarMarginTop = res.statusBarHeight || 0
-      })
-
-  }
-  // 页面不存在时触发
-  onPageNotFound() {
-
-  }
-  // this.props.children 是将要会渲染的页面
-  render() {
-    return (
-      <Provider store={store}>
-        {this.props.children}
-      </Provider>
-    )
-  }
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,89 @@
+.layout-body{
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    .layout-content{
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+        position: relative;
+        .layout-left{
+            overflow: auto;
+            width: 200px;
+            height: 100vh;
+            background: #001529;
+            padding-top: 60px;
+
+
+            padding-bottom: 60px;
+            .logo{
+                height: 60px;
+                line-height: 60px;
+                background: #001529;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 9999;
+                color:#fff;
+                font-size: 20px;
+            }
+            .layout-collapsed{
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                height: 50px;
+                line-height: 50px;
+                display: inline-block;
+                z-index: 9999;
+                color: #fff;
+                border-top:1px solid #eee ;
+                cursor: pointer;
+                background: #001529;
+            }
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .w-200{
+                animation: w80  200ms linear;
+            }
+            .w-80{
+                animation: w200  200ms linear;
+            }
+            @keyframes w80 {
+                from {
+                    width: 80px;
+                }
+                to {
+                    width: 200px;
+                }
+            }
+            @keyframes w200 {
+                from {
+                    width: 200px;
+                }
+                to {
+                    width: 80px;
+                }
+            }
+        }
+        .w-200{
+            width: 200px;
+        }
+        .w-80{
+            width: 80px;
+        }
+    }
+    .layout-right{
+        background: #fff;
+        margin: 10px;
+        min-height: 500px;
+        border-radius: 8px;
+    }
+    Footer{
+        height: 50px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
