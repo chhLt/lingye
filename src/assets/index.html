@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>websocket</title>
+    <script src="./jquery-2.2.3.min.js"></script>
+</head>
+
+<body>
+
+
+    <textarea id="message_content" readonly="readonly" cols="66" rows="14"></textarea>
+
+    <br />
+    <label for="message_content">聊天室　:</label>
+    <button id="btn_get_room_id">加入聊天室</button>
+    <button id="btn_exit">离开聊天室</button>
+    <br />
+    <label for="in_user_name">用户凭证: </label><span id="in_user_name">...</span>
+
+
+    <br /><br />
+
+    <label for="in_room_msg">群发消息: </label><input id="in_room_msg" value="" />
+    <button id="btn_send_all">群发消息</button>
+
+
+    <br /><br />
+
+    <h4>私聊</h4>
+    <label for="in_receive">发送给　: </label><select id="in_receive" style="width: 260px;"></select><br />
+    <label for="in_point_message">消息内容: </label><input id="in_point_message" value="" />
+    <button id="btn_send_point">发送消息</button>
+
+</body>
+
+<script type="text/javascript">
+    // socket
+    let ws = null;
+    // 获取凭证
+    let sender = sessionStorage.getItem("websocket_proof");
+
+    // url
+    let httpUrl = "http://websocket.sendcmd.com";
+    let wsUrl = "ws://websocket.sendcmd.com:9004";
+    // let wsUrl = "ws://1.14.159.82:9004";
+
+    /*
+     * 获取房间 id
+     */
+    $("#btn_get_room_id").click(function () {
+        // 加入聊天室按钮禁用
+        $("#btn_get_room_id").prop("disabled", true);
+        if (ws) {
+            alert("已加入聊天室!");
+            return;
+        } else if (!ws && sender) {
+            // 离开聊天室按钮启用
+            $("#btn_exit").prop("disabled", false);
+            // 用户凭证展示
+            $("#in_user_name").html(sender);
+            onopen(sender);
+            return;
+        }
+
+        let url = httpUrl + "/chat/getRoomProof";
+        $.get(url, function (response) {
+            if (200 === response.success) {
+                // 离开聊天室按钮启用
+                $("#btn_exit").prop("disabled", false);
+                // 用户凭证展示
+                $("#in_user_name").html(response.data);
+                // 用户凭证存在本地
+                sessionStorage.setItem("websocket_proof", response.data);
+                onopen(response.data);
+            } else {
+                // 加入聊天室按钮启用
+                $("#btn_get_room_id").prop("disabled", false);
+                alert(response.message);
+            }
+        });
+    });
+
+    /*
+     * 加入到房间
+     */
+    function onopen(proof) {
+        // let addRoomUrl = 'ws://127.0.0.1:9004/chat-room/' + proof;
+        let addRoomUrl = wsUrl + '/chat-room/' + proof;
+        ws = new WebSocket(addRoomUrl);
+
+        // 连接
+        ws.onopen = function () {
+            console.log("[" + proof + "] 加入连接...");
+        };
+
+        // 接收消息
+        ws.onmessage = function (event) {
+            // 服务端发送的消息
+            let dto = JSON.parse(event.data);
+            console.log("event: " + JSON.stringify(dto));
+            // 聊天框内容追加
+            let msg = "[" + dto.sender + "] " + dto.message;
+            $('#message_content').append(msg + '\r\n');
+            // 用户选择框更新
+            $("#in_receive").html(setOptionHtml(dto.sessionIds));
+        };
+
+        // 关闭连接
+        ws.onclose = function () {
+            $('#message_content').append('[' + proof + '] 离开了聊天室!');
+            console.log("[" + proof + "] 退出连接...");
+        }
+    }
+
+    /*
+     * 设置 select 中 option
+     */
+    function setOptionHtml(list) {
+        let html = "";
+        for (let i = 0; i < list.length; i++) {
+            if (sender === list[i]) {
+                continue;
+            }
+            html += "<option value='" + list[i] + "'>" + list[i] + "</option>";
+        }
+        return html;
+    }
+
+    /*
+     * 退出聊天室
+     */
+    $("#btn_exit").prop("disabled", true);
+    $('#btn_exit').click(function () {
+        if (ws) {
+            ws.close();
+            ws = null;
+            // 离开聊天室按钮禁用
+            $("#btn_exit").prop("disabled", true);
+            // 加入聊天室按钮启用
+            $("#btn_get_room_id").prop("disabled", false);
+            // 用户选择框更新
+            $("#in_receive").html("");
+        }
+    });
+
+    /*
+     * 客户端发送消息给所有人
+     */
+    $('#btn_send_all').click(function () {
+        if (ws) {
+            let msg = $('#in_room_msg').val();
+            if (!msg) {
+                alert("不能发送空消息!");
+                return;
+            }
+            ws.send(msg);
+            $('#in_room_msg').val('');
+        } else {
+            alert("还没有加入聊天室!");
+        }
+    });
+
+    /*
+     * 给指定用户发送消息
+     */
+    $("#btn_send_point").click(function () {
+        sender = sessionStorage.getItem("websocket_proof");
+        // 选中的用户
+        let receive = $("#in_receive").find("option:selected").val();
+        // 发送的消息
+        let message = $("#in_point_message").val();
+        if (!ws || !sender) {
+            alert("还没有加入聊天室!");
+            return;
+        } else if (!receive) {
+            alert("请选择发送的对象!");
+            return;
+        } else if (!message) {
+            alert("不能发送空消息!");
+            return;
+        }
+
+        // let sendToHimUrl ='http://127.0.0.1:9004/chat/' + sender + '/sendToHim';
+        let sendToHimUrl = httpUrl + '/chat/' + sender + '/sendToHim';
+        let param = {
+            who: receive,
+            msg: message
+        };
+        $.ajax({
+            url: sendToHimUrl,
+            data: JSON.stringify(param),
+            type: "post",
+            dateType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                if (200 === response.success) {
+                    // 清空发送的消息
+                    $("#in_point_message").val('');
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+    })
+</script>
+
+</html>
