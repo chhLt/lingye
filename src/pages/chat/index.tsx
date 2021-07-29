@@ -181,7 +181,7 @@ const ChatPC: React.FC = () => {
                 msg: msg
             }
         }
-        axios.post(sendToHimUrl, param).then(response => {
+        axios.post(sendToHimUrl, param).then((response: { data: any; }) => {
             let res = response.data;
             if (200 === res.success) {
                 // 清空发送的消息

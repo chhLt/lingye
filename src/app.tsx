@@ -1,11 +1,11 @@
 import 'antd/dist/antd.less';
-import './App.less';
+import './app.less';
 // import PrivateRoute from "components/privateRoute";
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Login from "pages/login";
 import Chat from "pages/chat";
-import Layout from "pages/layout";
+import Website from "pages/website/website";
 
 
 function App() {
@@ -14,8 +14,8 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/Login" component={Login}></Route>
-          <Route exact path="/" component={Chat}></Route>
-          {/* <PrivateRoute path="/layout" component={Layout}></PrivateRoute> */}
+          <Route exact path="/" component={Website}></Route>
+          <Route exact path="/Chat" component={Chat}></Route>
         </Switch>
       </BrowserRouter>
 
