@@ -1,25 +1,26 @@
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import PrivateRoute from "components/privateRoute";
+import { lazy, Suspense } from 'react'
 import 'antd/dist/antd.less';
 import './app.less';
-// import PrivateRoute from "components/privateRoute";
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import Login from "pages/login";
-import Chat from "pages/chat";
-import Website from "pages/website/website";
-
+const Website = lazy(() => import('pages/website/website'))
+const Login = lazy(() => import('pages/login'))
+const Chat = lazy(() => import('pages/chat'))
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/Login" component={Login}></Route>
-          <Route exact path="/" component={Website}></Route>
-          <Route exact path="/Chat" component={Chat}></Route>
-        </Switch>
-      </BrowserRouter>
-
-    </div>
+    <Suspense fallback={<span>加载中。。。</span>}>
+      <div className="App">
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/Login" component={Login}></Route>
+            <PrivateRoute exact path="/" component={Website} ></PrivateRoute>
+            <PrivateRoute exact path="/layout/chat" component={Chat}></PrivateRoute>
+          </Switch>
+        </BrowserRouter>
+      </div>
+    </Suspense>
   );
 }
 

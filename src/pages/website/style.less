@@ -5,7 +5,7 @@
     height: 100px;
     display: flex;
     align-items: center;
-    padding: 0 200px;
+    padding: 0 15vw;
     background: #212830;
     position: fixed;
     top: 0;
@@ -24,8 +24,10 @@
 
         img {
           display: inline-block;
-          width: 50px;
-          margin-right: 10px;
+          width: 2.1vw;
+          margin-right: .5vw;
+          position: relative;
+          top: .2vh;
         }
 
         span {
@@ -45,14 +47,14 @@
     }
 
     .nav {
-      margin-left: 70px;
+      margin-left: 3vw;
       font-size: 18px;
 
       a {
         color: #b7b5b5;
         display: inline-block;
         text-align: left;
-        padding-right: 70px;
+        padding-right: 3vw;
       }
 
       .active {
@@ -69,7 +71,7 @@
     }
 
     .center {
-      padding: 0 400px;
+      padding: 0 15vw;
 
       .title {
         display: flex;
@@ -97,21 +99,13 @@
         .case_content {
           display: flex;
           flex-wrap: wrap;
+          justify-content: space-between;
 
           .case_col {
-            width: 300px;
-            height: 200px;
-            margin-right: 44px;
+            width: 16vw;
+            max-height: 300px;
             margin-top: 30px;
             position: relative;
-
-            &:nth-child(4) {
-              margin-right: 0;
-            }
-
-            &:nth-child(8) {
-              margin-right: 0;
-            }
 
             img {
               width: 100%;
@@ -124,8 +118,8 @@
             top: 0;
             left: 0;
             right: 0;
-            width: 300px;
-            height: 200px;
+            width: 16vw;
+            height: 100%;
             background-color: rgba(33, 40, 48, .5);
             opacity: 0;
             color: #fff;
@@ -152,7 +146,6 @@
         .about_us_content {
           display: flex;
           margin-top: 10px;
-          align-items: center;
 
           span {
             flex: 2;
@@ -167,7 +160,8 @@
 
             img {
               display: inline-block;
-              width: 100%;
+              width: 25vw;
+              height: auto;
               border-radius: 8px;
             }
           }
@@ -282,6 +276,137 @@
       height: 50px;
       line-height: 50px;
       text-align: center;
+    }
+  }
+
+  #chat {
+    height: 500px;
+    width: 360px;
+    background: #fff;
+    border-left: 1px solid #eee;
+    z-index: 1000;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+
+    .title {
+      background: #212830;
+      color: #fff;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      display: flex;
+      justify-content: space-between;
+
+      img {
+        width: 22px;
+        height: 22px;
+
+        &:nth-child(2) {
+          width: 16px;
+          height: 16px;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .content {
+      height: 350px;
+      overflow-y: auto;
+      position: relative;
+
+      .welcome {
+        margin-top: 10px;
+
+        span {
+          background: #EFF3F6;
+          padding: 3px 8px;
+          color: #666;
+        }
+      }
+
+      .dialogue_content {
+        height: auto;
+
+        .dialogue {
+          display: flex;
+          padding: 0 10px;
+          margin: 10px 0;
+
+          .icon {
+
+            flex: 1;
+
+            img {
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+            }
+          }
+
+          .msg {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            margin-left: 10px;
+            flex: 9;
+
+            span {
+              &:nth-child(1) {
+                color: #6E6E81;
+              }
+
+              &:nth-child(2) {
+                margin-top: 5px;
+                background: #eee;
+                border-radius: 4px;
+                padding: 10px;
+                display: inline-block;
+                width: 250px;
+              }
+            }
+          }
+        }
+
+        .right {
+          display: flex;
+          flex-direction: row-reverse;
+
+          .msg {
+            align-items: flex-end;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
+    .send_msg {
+      border-top: 2px solid #eeeeee;
+      height: 110px;
+
+      textarea {
+        display: inline-block;
+        height: 70px;
+        width: 100%;
+        outline: none;
+        padding: 5px 10px;
+        border: none;
+      }
+
+      .send_btn {
+        display: flex;
+        flex-direction: row-reverse;
+        padding-right: 20px;
+
+        span {
+          background-color: #212830;
+          color: #fff;
+          padding: 3px 8px;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+      }
     }
   }
 }

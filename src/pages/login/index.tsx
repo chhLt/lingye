@@ -9,7 +9,7 @@ const Login: React.FC = (props: any) => {
         const { username, password } = values;
         if (username === "admin" && password === "admin123456") {
             Cookies.set("user", "admin")
-            history.push("/");
+            history.push("/layout/chat");
         } else {
             message.error("请输入正确的账号密码")
         }

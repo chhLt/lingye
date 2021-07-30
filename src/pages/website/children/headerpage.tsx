@@ -1,6 +1,7 @@
 
+import React from 'react'
 
-function HeadPage() {
+const HeadPage: React.FC = () => {
 
   return (
     <div id='head_content'>

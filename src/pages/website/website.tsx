@@ -1,11 +1,15 @@
+import React from 'react'
+
 import HeadPage from './children/headerpage'
 import Header from './component/header'
 import Footer from './component/footer'
+import Chat from './children/chat'
+
 import Custumer from './component/custumer'
 import './style.less'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
-function Website() {
+const Website: React.FC = () => {
 
   return (
     <div className='website'>
@@ -15,6 +19,7 @@ function Website() {
       </Switch>
       <Footer />
       <Custumer />
+      <Chat />
     </div>
   )
 }

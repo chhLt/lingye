@@ -6,10 +6,10 @@ function Footer() {
     <div id='footer'>
       <div className='left'>
         <div className='left_row'>
-          电话：
+          电话：18670088366
         </div>
         <div className='left_row'>
-          邮箱：
+          邮箱：1035801400@qq.com
         </div>
         <div className='left_row'>
           地址：湖南省长沙市天心区芙蓉中路三段558号建鸿达大厦2003号
